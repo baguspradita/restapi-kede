@@ -10,6 +10,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Models\Notification;
 
 class OrderController extends Controller
 {
@@ -65,7 +66,7 @@ class OrderController extends Controller
                 'items' => 'required|array|min:1',
                 'items.*.product_id' => 'required|exists:products,id',
                 'items.*.quantity' => 'required|integer|min:1',
-                'payment_method' => 'required|string|in:COD,Bank Transfer,E-wallet',
+                'payment_method' => 'required|string|in:COD,Bank Transfer,E-wallet,Credit Card',
                 'notes' => 'nullable|string',
                 'delivery_fee' => 'nullable|numeric|min:0',
                 'discount' => 'nullable|numeric|min:0',
@@ -131,6 +132,19 @@ class OrderController extends Controller
                     $cart->items()->delete();
                     $cart->updateTotal();
                 }
+
+                // Create Notification
+                $itemsList = collect($orderItems)->map(function ($item) {
+                    return $item['product_name'] . ' (' . $item['quantity'] . 'x)';
+                })->implode(', ');
+
+                Notification::create([
+                    'user_id' => $request->user()->id,
+                    'title' => 'Order Placed Successfully',
+                    'message' => 'Your order #' . $order->order_number . ' has been placed successfully. Items: ' . $itemsList,
+                    'type' => 'order_placed',
+                    'is_read' => false,
+                ]);
 
                 DB::commit();
 
