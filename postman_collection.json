@@ -283,7 +283,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"address_id\": 1,\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 2\n    }\n  ],\n  \"payment_method\": \"COD\",\n  \"delivery_fee\": 10000,\n  \"notes\": \"Please deliver in the morning\"\n}"
+              "raw": "{\n  \"address_id\": 1,\n  \"items\": [\n    {\n      \"product_id\": 1,\n      \"quantity\": 2\n    }\n  ],\n  \"payment_method\": \"COD\",\n  \"notes\": \"Please deliver in the morning\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/orders",

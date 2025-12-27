@@ -91,7 +91,6 @@ Body: {
   address_id,
   items: [{ product_id, quantity }],
   payment_method,
-  delivery_fee,
   notes
 }
 Headers: Authorization: Bearer {token}

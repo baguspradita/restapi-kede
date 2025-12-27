@@ -59,16 +59,6 @@
                             <td colspan="3" class="px-6 py-4 text-right text-sm font-medium text-gray-500">Subtotal</td>
                             <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900">IDR {{ number_format($order->subtotal, 0, ',', '.') }}</td>
                         </tr>
-                        <tr class="bg-gray-50">
-                            <td colspan="3" class="px-6 py-4 text-right text-sm font-medium text-gray-500">Delivery Fee</td>
-                            <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900">IDR {{ number_format($order->delivery_fee, 0, ',', '.') }}</td>
-                        </tr>
-                        @if($order->discount > 0)
-                        <tr class="bg-gray-50">
-                            <td colspan="3" class="px-6 py-4 text-right text-sm font-medium text-red-500">Discount</td>
-                            <td class="px-6 py-4 text-right text-sm font-semibold text-red-600">-IDR {{ number_format($order->discount, 0, ',', '.') }}</td>
-                        </tr>
-                        @endif
                         <tr class="bg-indigo-50">
                             <td colspan="3" class="px-6 py-4 text-right text-base font-bold text-indigo-900">Total Amount</td>
                             <td class="px-6 py-4 text-right text-lg font-bold text-indigo-700">IDR {{ number_format($order->total_amount, 0, ',', '.') }}</td>

@@ -60,16 +60,13 @@ class OrderSeeder extends Seeder
                     ];
                 }
 
-                $deliveryFee = 10000;
-                $totalAmount = $subtotal + $deliveryFee;
+                $totalAmount = $subtotal;
 
                 $order = Order::create([
                     'user_id' => $user->id,
                     'order_number' => Order::generateOrderNumber(),
                     'address_id' => $address->id,
                     'subtotal' => $subtotal,
-                    'delivery_fee' => $deliveryFee,
-                    'discount' => 0,
                     'total_amount' => $totalAmount,
                     'payment_method' => 'Bank Transfer',
                     'payment_status' => 'Paid',

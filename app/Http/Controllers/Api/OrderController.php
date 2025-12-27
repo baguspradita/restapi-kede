@@ -68,8 +68,6 @@ class OrderController extends Controller
                 'items.*.quantity' => 'required|integer|min:1',
                 'payment_method' => 'required|string|in:COD,Bank Transfer,E-wallet,Credit Card',
                 'notes' => 'nullable|string',
-                'delivery_fee' => 'nullable|numeric|min:0',
-                'discount' => 'nullable|numeric|min:0',
             ]);
 
             DB::beginTransaction();
@@ -102,9 +100,7 @@ class OrderController extends Controller
                     $product->decrement('stock', $item['quantity']);
                 }
 
-                $deliveryFee = $validated['delivery_fee'] ?? 0;
-                $discount = $validated['discount'] ?? 0;
-                $totalAmount = $subtotal + $deliveryFee - $discount;
+                $totalAmount = $subtotal;
 
                 // Create order
                 $order = Order::create([
@@ -112,8 +108,6 @@ class OrderController extends Controller
                     'order_number' => Order::generateOrderNumber(),
                     'address_id' => $validated['address_id'],
                     'subtotal' => $subtotal,
-                    'delivery_fee' => $deliveryFee,
-                    'discount' => $discount,
                     'total_amount' => $totalAmount,
                     'payment_method' => $validated['payment_method'],
                     'payment_status' => 'Pending',
