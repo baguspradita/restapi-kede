@@ -44,9 +44,9 @@ class ReviewController extends Controller
             // Check if order belongs to user and is delivered
             $order = $request->user()->orders()->findOrFail($orderId);
 
-            if ($order->order_status !== 'Delivered') {
-                return $this->errorResponse('Can only review delivered orders', [], 400);
-            }
+            // if ($order->order_status !== 'Delivered') {
+            //     return $this->errorResponse('Can only review delivered orders', [], 400);
+            // }
 
             // Check if product is in the order
             $orderItem = $order->items()->where('product_id', $validated['product_id'])->first();
