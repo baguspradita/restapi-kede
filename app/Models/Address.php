@@ -21,12 +21,14 @@ class Address extends Model
         'latitude',
         'longitude',
         'is_default',
+        'is_selected',
     ];
 
     protected $casts = [
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
         'is_default' => 'boolean',
+        'is_selected' => 'boolean',
     ];
 
     // Relationships

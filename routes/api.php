@@ -82,6 +82,8 @@ Route::middleware('auth:api')->group(function () {
         Route::put('{id}', [AddressController::class, 'update']);
         Route::delete('{id}', [AddressController::class, 'destroy']);
         Route::put('{id}/default', [AddressController::class, 'setDefault']);
+        Route::post('select', [AddressController::class, 'select']);
+        Route::put('{id}/select', [AddressController::class, 'toggleSelect']);
     });
 
     // Order routes

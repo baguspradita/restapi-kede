@@ -46,6 +46,7 @@ class AddressController extends Controller
                 'latitude' => 'nullable|numeric',
                 'longitude' => 'nullable|numeric',
                 'is_default' => 'boolean',
+                'is_selected' => 'boolean',
             ]);
 
             $validated['user_id'] = $request->user()->id;
@@ -81,6 +82,7 @@ class AddressController extends Controller
                 'postal_code' => 'sometimes|required|string|max:10',
                 'latitude' => 'nullable|numeric',
                 'longitude' => 'nullable|numeric',
+                'is_selected' => 'sometimes|boolean',
             ]);
 
             $address->update($validated);
@@ -120,6 +122,51 @@ class AddressController extends Controller
 
             return $this->successResponse($address, 'Default address set successfully');
 
+        } catch (\Exception $e) {
+            return $this->notFoundResponse('Address not found');
+        }
+    }
+
+    public function select(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'address_ids' => 'required|array|min:1',
+                'address_ids.*' => 'integer',
+                'selected' => 'required|boolean',
+            ]);
+
+            $user = $request->user();
+
+            $ids = $user->addresses()
+                ->whereIn('id', $validated['address_ids'])
+                ->pluck('id')
+                ->all();
+
+            if (empty($ids)) {
+                return $this->validationErrorResponse(['address_ids' => ['No valid address IDs provided.']]);
+            }
+
+            Address::whereIn('id', $ids)->update(['is_selected' => $validated['selected']]);
+
+            $updated = $user->addresses()->whereIn('id', $ids)->get();
+
+            return $this->successResponse($updated, 'Addresses selection updated successfully');
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e->errors());
+        } catch (\Exception $e) {
+            return $this->errorResponse('Failed to update selection: ' . $e->getMessage(), [], 500);
+        }
+    }
+
+    public function toggleSelect(Request $request, $id)
+    {
+        try {
+            $address = $request->user()->addresses()->findOrFail($id);
+            $address->is_selected = !$address->is_selected;
+            $address->save();
+
+            return $this->successResponse($address, 'Address selection toggled successfully');
         } catch (\Exception $e) {
             return $this->notFoundResponse('Address not found');
         }

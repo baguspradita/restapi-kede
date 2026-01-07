@@ -66,7 +66,7 @@ class OrderController extends Controller
                 'items' => 'required|array|min:1',
                 'items.*.product_id' => 'required|exists:products,id',
                 'items.*.quantity' => 'required|integer|min:1',
-                'payment_method' => 'required|string|in:COD,Bank Transfer,E-wallet,Credit Card',
+                'payment_method' => 'required|string|in:COD,IPAYMU,Bank Transfer,E-wallet,Credit Card',
                 'notes' => 'nullable|string',
             ]);
 

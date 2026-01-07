@@ -3,12 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 use App\Models\Product;
-
 use App\Models\User;
-
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Models\Order;
+use App\Http\Controllers\Api\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,3 +31,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::post('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
 });
+
+// Payment callbacks (public)
+Route::get('/payments/return', [PaymentController::class, 'returnHandler']);
+Route::get('/payments/cancel', [PaymentController::class, 'cancelHandler']);
