@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Models\Order;
 use App\Http\Controllers\Api\PaymentController;
 
@@ -30,6 +31,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class)->only(['index']);
     Route::resource('orders', OrderController::class);
     Route::post('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::resource('reviews', ReviewController::class)->only(['index', 'destroy']);
 });
 
 // Payment callbacks (public)

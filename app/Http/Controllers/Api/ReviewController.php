@@ -85,6 +85,11 @@ class ReviewController extends Controller
             // Update product rating
             $this->updateProductRating($validated['product_id']);
 
+            // Update order status if Shipped
+            if ($order->order_status === 'Shipped') {
+                $order->update(['order_status' => 'Delivered']);
+            }
+
             return $this->createdResponse($review, 'Review created successfully');
 
         } catch (ValidationException $e) {
